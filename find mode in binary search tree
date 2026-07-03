@@ -1,0 +1,50 @@
+class Solution {
+
+    int count = 0;
+    int maxCount = 0;
+    Integer prev = null;
+
+    List<Integer> list = new ArrayList<>();
+
+    public int[] findMode(TreeNode root) {
+
+        inorder(root);
+
+        int[] ans = new int[list.size()];
+
+        for (int i = 0; i < list.size(); i++) {
+            ans[i] = list.get(i);
+        }
+
+        return ans;
+    }
+
+    private void inorder(TreeNode node) {
+
+        if (node == null)
+            return;
+
+        // Left
+        inorder(node.left);
+
+        // Process current node
+        if (prev != null && prev == node.val) {
+            count++;
+        } else {
+            count = 1;
+        }
+
+        if (count > maxCount) {
+            maxCount = count;
+            list.clear();
+            list.add(node.val);
+        } else if (count == maxCount) {
+            list.add(node.val);
+        }
+
+        prev = node.val;
+
+        // Right
+        inorder(node.right);
+    }
+}
